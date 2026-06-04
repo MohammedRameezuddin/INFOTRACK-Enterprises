@@ -1,0 +1,256 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    @apply antialiased font-sans selection:bg-primary-500/30 selection:text-slate-900;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: #0f172a !important;
+    @apply font-heading font-bold tracking-tight;
+  }
+}
+
+/* Glassmorphism custom classes */
+.glass {
+  background: rgba(255, 255, 255, 0.90) !important;
+  border: 1px solid rgba(15, 23, 42, 0.06) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  color: #0f172a !important;
+}
+
+/* Ensure any utilities like `text-white` inside light glass panels are overridden
+   so text remains readable on the white background. */
+.glass.text-white,
+.glass .text-white,
+.glass * {
+  color: #0f172a !important;
+}
+
+.glass-light {
+  background: rgba(255, 255, 255, 0.98) !important;
+  border: 1px solid rgba(15, 23, 42, 0.04) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border: 1px solid rgba(15, 23, 42, 0.06) !important;
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.06) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  background: rgba(250, 251, 255, 0.98) !important;
+  border-color: rgba(2, 85, 204, 0.12) !important; /* blue border highlight */
+  box-shadow: 0 12px 30px rgba(2, 6, 23, 0.08), 0 0 18px rgba(2, 85, 204, 0.04) !important;
+  transform: translateY(-2px);
+}
+
+/* Hard white-theme fallback for any leftover dark panel utilities. */
+[class*="bg-navy-"],
+[class*="bg-slate-9"],
+[class*="bg-slate-8"],
+[class*="bg-black"],
+[class*="bg-[#1c2c54]"],
+[class*="border-white/"],
+[class*="hover:bg-white/"],
+[class*="from-black"],
+[class*="to-black"] {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+[class*="bg-navy-"] *,
+[class*="bg-slate-9"] *,
+[class*="bg-slate-8"] *,
+[class*="bg-black"] *,
+[class*="bg-[#1c2c54]"] * {
+  color: #0f172a !important;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.12);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(2, 85, 204, 0.22);
+}
+
+/* Enable Glow effects */
+.glow-primary {
+  box-shadow: 0 0 25px rgba(14, 165, 233, 0.25) !important;
+}
+
+.glow-electric {
+  box-shadow: 0 0 25px rgba(0, 163, 255, 0.3) !important;
+}
+
+.glow-hover:hover {
+  box-shadow: 0 0 30px rgba(14, 165, 233, 0.35) !important;
+}
+
+/* Hover shine effect */
+.hover-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.hover-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 30%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(30deg);
+  transition: all 0.6s ease;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.hover-shine:hover::after {
+  left: 130%;
+  opacity: 1;
+  transition: all 0.6s ease;
+}
+
+/* Custom animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee-fast {
+  animation: marquee 15s linear infinite;
+}
+
+/* App container */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff !important;
+}
+html, body, #root, main, #app {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+/* Force-reset any dark background utilities at highest specificity */
+*:where(html, body, #root, main, section, div, header, footer) {
+  background-color: unset !important;
+}
+
+/* Re-apply white to main layout containers */
+body, #root, main, .app-root, .flex, .min-h-screen {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+/* Radial masks & color leak meshes */
+.bg-radial-overlay {
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2) 0%, #ffffff 100%) !important;
+}
+
+.bg-radial-mesh {
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.06) 0, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(2, 85, 204, 0.05) 0, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(14, 165, 233, 0.04) 0, transparent 50%) !important;
+}
+
+/* Floating absolute blur blobs */
+.blur-\[120px\],
+.blur-\[100px\],
+.blur-\[80px\] {
+  display: block !important;
+}
+
+/* Select, input, and textarea styling */
+input, select, textarea {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(15, 23, 42, 0.06) !important;
+  color: #0f172a !important;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: #0ea5e9 !important;
+  outline: none !important;
+  box-shadow: 0 0 6px rgba(14, 165, 233, 0.12) !important;
+}
+
+/* Fullscreen Modal Exemption - Keep it Dark & Cinematic */
+.fixed.z-50.bg-black\/95,
+.fixed.z-50.bg-black\/95 * {
+  background-color: transparent;
+}
+.fixed.z-50.bg-black\/95 {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+}
+.fixed.z-50.bg-black\/95 .bg-black {
+  background-color: #ffffff !important;
+}
+.fixed.z-50.bg-black\/95 .text-white,
+.fixed.z-50.bg-black\/95 .text-slate-300,
+.fixed.z-50.bg-black\/95 span,
+.fixed.z-50.bg-black\/95 button {
+  color: #0f172a !important;
+}
+.fixed.z-50.bg-black\/95 input[type="range"] {
+  background-color: rgba(15, 23, 42, 0.06) !important;
+}
+
+.mask-marquee {
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+/* Explicit override for any body class that remains dark */
+body.bg-navy-950, body[class*="bg-navy-"] {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+body.bg-navy-950 * , body[class*="bg-navy-"] * {
+  background-color: transparent !important;
+  color: inherit !important;
+}
