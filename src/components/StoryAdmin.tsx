@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   ArrowLeft, Plus, Trash2, Edit3, Save, X, Eye, Clock,
-  Image as ImageIcon, Video, Upload, TrendingUp, BarChart3,
+  Image as ImageIcon, Upload, TrendingUp, BarChart3,
   CheckCircle2, AlertCircle, Zap, ShoppingBag, Megaphone,
   Newspaper, Gift, Camera, FileVideo, FolderOpen, Send
 } from 'lucide-react';
@@ -76,7 +76,6 @@ export const StoryAdmin: React.FC<StoryAdminProps> = ({ setView }) => {
   const [ctaText, setCtaText] = useState('Shop Now');
   const [ctaUrl, setCtaUrl] = useState('/store');
   const [expiryHours, setExpiryHours] = useState(24);
-  const [status, setStatus] = useState<'draft' | 'published'>('published');
   const [mediaFile, setMediaFile] = useState<File | null>(null);
   const [mediaPreview, setMediaPreview] = useState<string>('');
 
@@ -99,7 +98,6 @@ export const StoryAdmin: React.FC<StoryAdminProps> = ({ setView }) => {
     setCtaText('Shop Now');
     setCtaUrl('/store');
     setExpiryHours(24);
-    setStatus('published');
     setMediaFile(null);
     setMediaPreview('');
     setEditingId(null);
@@ -197,7 +195,6 @@ export const StoryAdmin: React.FC<StoryAdminProps> = ({ setView }) => {
     setCategory(story.category);
     setCtaText(story.ctaText);
     setCtaUrl(story.ctaUrl);
-    setStatus(story.status as 'draft' | 'published');
     setEditingId(story.id);
     setExpiryHours(24);
     setActiveTab('create');

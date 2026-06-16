@@ -20,15 +20,6 @@ export const Footer: React.FC = () => {
   const supportPhone = db.getSupportPhone();
   const alternatePhone = db.getAlternatePhone();
   const supportEmail = db.getSupportEmail();
-  const supportAddress = db.getSupportAddress();
-
-  // Formatted display versions
-  const formatPhone = (p: string) => {
-    if (p.startsWith('91') && p.length === 12) {
-      return `+91 ${p.substring(2, 7)} ${p.substring(7)}`;
-    }
-    return p;
-  };
 
   return (
     <footer className="bg-white border-t border-slate-200 pt-16 pb-8 text-slate-600">
