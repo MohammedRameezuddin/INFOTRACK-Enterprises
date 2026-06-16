@@ -177,7 +177,8 @@ html, body, #root, main, #app {
 }
 
 /* Force-reset any dark background utilities at highest specificity */
-*:where(html, body, #root, main, section, div, header, footer) {
+/* Exclude Clerk auth UI elements from background reset */
+*:where(html, body, #root, main, section, div, header, footer):not([class*="cl-"]) {
   background-color: unset !important;
 }
 
