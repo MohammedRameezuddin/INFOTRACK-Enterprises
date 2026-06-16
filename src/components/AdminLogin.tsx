@@ -76,7 +76,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onCancel
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@infotrack.in"
+              placeholder="Enter admin email"
               required
               className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-electric transition-colors"
             />
@@ -113,11 +113,11 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onCancel
           </button>
         </form>
 
-        {/* Credentials guide block */}
+        {/* Security notice */}
         <div className="bg-white border border-slate-200 rounded-xl p-3.5 text-[10px] text-slate-500 leading-relaxed text-center shadow-sm">
-          <p className="font-semibold text-slate-600 mb-1">🔑 Default Workspace Admin Credentials:</p>
-          <p>Email: <span className="text-primary-600 font-bold">admin@infotrack.in</span></p>
-          <p>Password: <span className="text-primary-600 font-bold">InfotrackAdmin2026!</span></p>
+          <p className="font-semibold text-slate-600 mb-1">🔒 Restricted Access</p>
+          <p>This portal is for authorized administrators only.</p>
+          <p className="mt-1">Contact your system administrator for access credentials.</p>
         </div>
       </div>
     </div>
