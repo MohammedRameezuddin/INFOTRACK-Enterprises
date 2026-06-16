@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, ShieldAlert, CircleDot } from 'lucide-react';
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/clerk-react';
 import type { User as UserType } from '../db/mockDb';
 import { Logo } from './Logo';
 
@@ -133,16 +140,40 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </button>
 
-            {/* Profile Avatar / Indicator */}
-                  <div className="flex items-center space-x-2 border-l border-slate-200 pl-2 sm:pl-4">
-                    <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-xs font-bold text-primary-500 uppercase">
-                {currentUser.name[0]}
+            {/* Clerk Auth Controls */}
+            <SignedOut>
+              <div className="flex items-center space-x-2 border-l border-slate-200 pl-2 sm:pl-4">
+                <SignInButton mode="modal">
+                  <button className="px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all">
+                    Sign In
+                  </button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <button className="px-3 py-1.5 rounded-lg text-sm font-semibold text-white bg-primary-500 hover:bg-primary-600 transition-all shadow-sm">
+                    Sign Up
+                  </button>
+                </SignUpButton>
               </div>
-              <div className="hidden xl:block text-left">
-                <p className="text-xs font-semibold text-slate-900 leading-none">{currentUser.name}</p>
-                <p className="text-[10px] text-slate-600 mt-0.5 capitalize">{currentUser.role} Account</p>
+            </SignedOut>
+            <SignedIn>
+              <div className="flex items-center space-x-2 border-l border-slate-200 pl-2 sm:pl-4">
+                <UserButton
+                  appearance={{
+                    elements: {
+                      avatarBox: 'w-8 h-8',
+                    },
+                  }}
+                  showName
+                  userProfileProps={{
+                    appearance: {
+                      elements: {
+                        rootBox: 'z-[100]',
+                      },
+                    },
+                  }}
+                />
               </div>
-            </div>
+            </SignedIn>
           </div>
         </div>
 
