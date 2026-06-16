@@ -94,8 +94,8 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ currentUser, set
                 </div>
 
                 <div className="text-left sm:text-right">
-                  <p className="text-[10px] text-slate-500 font-semibold uppercase leading-none">Grand Total Invoice</p>
-                  <p className="text-xl font-heading font-extrabold text-primary-400 mt-1">₹{order.totalPrice.toLocaleString('en-IN')}</p>
+                  <p className="text-[10px] text-slate-500 font-semibold uppercase leading-none">Invoice Summary</p>
+                  <p className="text-sm font-semibold text-primary-400 mt-1">Handled via WhatsApp follow-up</p>
                 </div>
               </div>
 
@@ -109,7 +109,6 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ currentUser, set
                         <span className="font-semibold text-slate-900">{item.productTitle}</span>
                         <span className="text-slate-500 ml-2">x{item.quantity}</span>
                       </div>
-                      <span className="font-semibold text-slate-300">₹{(item.price * item.quantity).toLocaleString('en-IN')}</span>
                     </div>
                   ))}
                 </div>

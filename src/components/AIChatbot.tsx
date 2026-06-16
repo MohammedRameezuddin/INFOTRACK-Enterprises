@@ -29,7 +29,7 @@ export const AIChatbot: React.FC<AIChatbotProps> = ({ onAddToCart }) => {
 
   // Quick suggestion chips
   const suggestions = [
-    'Laptop under ₹1,00,000 for coding',
+    'Laptop for coding',
     'Outdoor 4K CCTV camera',
     'Best high-availability server',
     'How do I request an AMC contract?'
@@ -163,7 +163,7 @@ export const AIChatbot: React.FC<AIChatbotProps> = ({ onAddToCart }) => {
                             />
                             <div className="text-left">
                               <p className="font-semibold text-slate-900 truncate w-36 sm:w-44">{prod.title}</p>
-                              <p className="text-primary-500 font-medium mt-0.5">₹{prod.price.toLocaleString('en-IN')}</p>
+                              <p className="text-slate-500 font-medium mt-0.5">Request on WhatsApp</p>
                             </div>
                           </div>
                           <button

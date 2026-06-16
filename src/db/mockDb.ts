@@ -53,6 +53,30 @@ export interface Order {
   createdAt: string;
 }
 
+export interface Story {
+  id: string;
+  title: string;
+  description: string;
+  mediaUrl: string;
+  thumbnailUrl: string;
+  mediaType: 'image' | 'video';
+  status: 'draft' | 'published' | 'expired';
+  createdBy: string;
+  createdAt: string;
+  expiresAt: string | null; // null = permanent
+  ctaText: string;
+  ctaUrl: string;
+  viewCount: number;
+  category: 'offer' | 'product' | 'announcement' | 'news' | 'promotion';
+}
+
+export interface StoryView {
+  id: string;
+  storyId: string;
+  sessionId: string;
+  viewedAt: string;
+}
+
 export interface Review {
   id: string;
   productId: string;
@@ -607,6 +631,92 @@ const INITIAL_REVIEWS: Review[] = [
   }
 ];
 
+// Helper: generate a future ISO date
+const hoursFromNow = (h: number) => new Date(Date.now() + h * 3600000).toISOString();
+
+const INITIAL_STORIES: Story[] = [
+  {
+    id: 'story-1',
+    title: 'Summer Sale is Live!',
+    description: 'Up to 30% off on Dell Latitude laptops. Limited period offer – grab now!',
+    mediaUrl: 'https://images.unsplash.com/photo-1607053300615-3c92e2e1d1b4?w=1080&auto=format&fit=crop',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1607053300615-3c92e2e1d1b4?w=150&auto=format&fit=crop',
+    mediaType: 'image',
+    status: 'published',
+    createdBy: 'user-admin',
+    createdAt: hoursFromNow(-6),
+    expiresAt: hoursFromNow(18),
+    ctaText: 'Shop Now',
+    ctaUrl: '/store',
+    viewCount: 342,
+    category: 'offer'
+  },
+  {
+    id: 'story-2',
+    title: 'New Arrival: ThinkPad X1 Carbon',
+    description: 'The legendary business laptop is now in stock. Premium keyboard, carbon fibre build.',
+    mediaUrl: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=1080&auto=format&fit=crop',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=150&auto=format&fit=crop',
+    mediaType: 'image',
+    status: 'published',
+    createdBy: 'user-admin',
+    createdAt: hoursFromNow(-3),
+    expiresAt: hoursFromNow(21),
+    ctaText: 'View Product',
+    ctaUrl: '/store',
+    viewCount: 187,
+    category: 'product'
+  },
+  {
+    id: 'story-3',
+    title: 'Free CCTV Site Survey',
+    description: 'Book a free on-site surveillance survey this week. No obligation, expert consultation included.',
+    mediaUrl: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=1080&auto=format&fit=crop',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=150&auto=format&fit=crop',
+    mediaType: 'image',
+    status: 'published',
+    createdBy: 'user-admin',
+    createdAt: hoursFromNow(-12),
+    expiresAt: hoursFromNow(12),
+    ctaText: 'Book Survey',
+    ctaUrl: '/services',
+    viewCount: 521,
+    category: 'promotion'
+  },
+  {
+    id: 'story-4',
+    title: 'Server Infrastructure Upgrade',
+    description: 'Dell PowerEdge R760 now available. Dual Xeon, 128GB ECC RAM. Built for enterprise AI workloads.',
+    mediaUrl: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1080&auto=format&fit=crop',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=150&auto=format&fit=crop',
+    mediaType: 'image',
+    status: 'published',
+    createdBy: 'user-admin',
+    createdAt: hoursFromNow(-2),
+    expiresAt: null, // permanent
+    ctaText: 'Learn More',
+    ctaUrl: '/store',
+    viewCount: 95,
+    category: 'announcement'
+  },
+  {
+    id: 'story-5',
+    title: 'Network Security Webinar',
+    description: 'Join our free webinar on Sophos XGS firewall best practices. This Thursday, 4 PM IST.',
+    mediaUrl: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1080&auto=format&fit=crop',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=150&auto=format&fit=crop',
+    mediaType: 'image',
+    status: 'published',
+    createdBy: 'user-admin',
+    createdAt: hoursFromNow(-1),
+    expiresAt: hoursFromNow(48),
+    ctaText: 'Register Now',
+    ctaUrl: '/services',
+    viewCount: 64,
+    category: 'news'
+  }
+];
+
 export class MockDb {
   private getStorageItem<T>(key: string, initial: T): T {
     const data = localStorage.getItem(`infotrack_${key}`);
@@ -877,6 +987,98 @@ export class MockDb {
 
   setDirectorName(name: string): void {
     this.setStorageItem<string>('director_name', name);
+  }
+
+  // Stories
+  getStories(): Story[] {
+    return this.getStorageItem<Story[]>('stories', INITIAL_STORIES);
+  }
+
+  // Only return published, non-expired stories
+  getActiveStories(): Story[] {
+    const stories = this.getStories();
+    const now = new Date().toISOString();
+    return stories.filter(s => {
+      if (s.status !== 'published') return false;
+      if (s.expiresAt && s.expiresAt < now) return false;
+      return true;
+    });
+  }
+
+  createStory(story: Omit<Story, 'id' | 'createdAt' | 'viewCount'>): Story {
+    const stories = this.getStories();
+    const newStory: Story = {
+      ...story,
+      id: `story-${Math.floor(10000 + Math.random() * 90000)}`,
+      createdAt: new Date().toISOString(),
+      viewCount: 0
+    };
+    stories.unshift(newStory);
+    this.setStorageItem<Story[]>('stories', stories);
+    return newStory;
+  }
+
+  updateStory(id: string, updates: Partial<Story>): Story | null {
+    const stories = this.getStories();
+    const story = stories.find(s => s.id === id);
+    if (story) {
+      Object.assign(story, updates);
+      this.setStorageItem<Story[]>('stories', stories);
+      return story;
+    }
+    return null;
+  }
+
+  deleteStory(id: string): void {
+    const stories = this.getStories();
+    this.setStorageItem<Story[]>('stories', stories.filter(s => s.id !== id));
+  }
+
+  incrementStoryView(storyId: string): void {
+    const stories = this.getStories();
+    const story = stories.find(s => s.id === storyId);
+    if (story) {
+      story.viewCount += 1;
+      this.setStorageItem<Story[]>('stories', stories);
+
+      // Also log view
+      const views = this.getStoryViews(storyId);
+      const sessionId = sessionStorage.getItem('infotrack_session') || (() => {
+        const sid = `sess-${Math.random().toString(36).slice(2, 10)}`;
+        sessionStorage.setItem('infotrack_session', sid);
+        return sid;
+      })();
+      views.push({
+        id: `view-${Math.floor(100000 + Math.random() * 900000)}`,
+        storyId,
+        sessionId,
+        viewedAt: new Date().toISOString()
+      });
+      this.setStorageItem<StoryView[]>('story_views', views);
+    }
+  }
+
+  getStoryViews(storyId?: string): StoryView[] {
+    const views = this.getStorageItem<StoryView[]>('story_views', []);
+    if (storyId) return views.filter(v => v.storyId === storyId);
+    return views;
+  }
+
+  // Auto-expire stories past their expiry date
+  expireOldStories(): number {
+    const stories = this.getStories();
+    const now = new Date().toISOString();
+    let expired = 0;
+    stories.forEach(s => {
+      if (s.status === 'published' && s.expiresAt && s.expiresAt < now) {
+        s.status = 'expired';
+        expired++;
+      }
+    });
+    if (expired > 0) {
+      this.setStorageItem<Story[]>('stories', stories);
+    }
+    return expired;
   }
 }
 

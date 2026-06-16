@@ -656,10 +656,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ setView, setSelectedPr
       <ScrollReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-sm">
           {[
-            { end: 500, suffix: '+', label: 'Enterprise Clients' },
-            { end: 15, prefix: '₹', suffix: 'Cr+', divisor: 10, label: 'Hardware Deployed' },
-            { end: 998, suffix: '%', divisor: 10, label: 'SLA Support Uptime' },
-            { end: 5, suffix: '★', label: 'Client Satisfaction' }
+            { end: 500, prefix: '', suffix: '+', label: 'Enterprise Clients' },
+            { end: 15, prefix: '', suffix: 'Cr+', divisor: 10, label: 'Hardware Deployed' },
+            { end: 998, prefix: '', suffix: '%', divisor: 10, label: 'SLA Support Uptime' },
+            { end: 5, prefix: '', suffix: '★', label: 'Client Satisfaction' }
           ].map((stat, idx) => (
             <div key={idx} className="text-center space-y-1 sm:space-y-2 border-r border-slate-200 last:border-0">
               <p className="text-2xl sm:text-4xl lg:text-5xl font-heading font-extrabold text-slate-900">
@@ -740,12 +740,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ setView, setSelectedPr
                     </ul>
                   </div>
                   <div className="space-y-3 pt-4 border-t border-slate-200">
-                    <p className="text-sm font-extrabold text-primary-600">{serv.priceEstimate}</p>
                     <button
                       onClick={() => setView('services')}
                       className="w-full py-2.5 bg-slate-50 hover:bg-primary-600 hover:text-white border border-slate-200 hover:border-primary-600 text-slate-700 rounded-xl text-xs font-bold transition-all"
                     >
-                      Book Service Call
+                      Request on WhatsApp
                     </button>
                   </div>
                 </div>
@@ -852,7 +851,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ setView, setSelectedPr
                   <p className="text-xs text-slate-400 line-clamp-2">{prod.description}</p>
                 </div>
                 <div className="flex items-center justify-between pt-4 border-t border-slate-200">
-                  <p className="text-xl font-heading font-bold text-slate-900">₹{prod.price.toLocaleString('en-IN')}</p>
+                  <p className="text-sm font-semibold text-slate-500">Request a WhatsApp quote</p>
                   <span className="text-xs font-semibold text-primary-400 group-hover:translate-x-1 transition-transform flex items-center space-x-1">
                     <span>Details</span>
                     <ArrowRight className="w-3.5 h-3.5" />

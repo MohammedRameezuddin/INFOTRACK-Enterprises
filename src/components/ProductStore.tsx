@@ -9,7 +9,7 @@ interface ProductStoreProps {
   onAddToCart: (product: Product, quantity: number) => void;
   selectedProduct: Product | null;
   setSelectedProduct: (product: Product | null) => void;
-  setWhatsAppContext: (product: { title: string; price: number } | undefined) => void;
+  setWhatsAppContext: (product: { title: string } | undefined) => void;
 }
 
 export const ProductStore: React.FC<ProductStoreProps> = ({
@@ -22,7 +22,6 @@ export const ProductStore: React.FC<ProductStoreProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedBrand, setSelectedBrand] = useState('All');
-  const [maxPrice, setMaxPrice] = useState(500000);
   const [sortBy, setSortBy] = useState('popularity');
   const [isAiSearch, setIsAiSearch] = useState(false);
   const [aiResults, setAiResults] = useState<RecommendationResult[]>([]);
@@ -58,7 +57,7 @@ export const ProductStore: React.FC<ProductStoreProps> = ({
       setReviews(db.getReviews(selectedProduct.id));
       setQuantity(1);
       setActiveTab('specs');
-      setWhatsAppContext({ title: selectedProduct.title, price: selectedProduct.price });
+      setWhatsAppContext({ title: selectedProduct.title });
     } else {
       setWhatsAppContext(undefined);
     }
@@ -121,20 +120,21 @@ export const ProductStore: React.FC<ProductStoreProps> = ({
   const filteredProducts = products.filter(prod => {
     const matchesCategory = selectedCategory === 'All' || prod.category === selectedCategory;
     const matchesBrand = selectedBrand === 'All' || prod.brand === selectedBrand;
-    const matchesPrice = prod.price <= maxPrice;
-    
     const matchesSearch = searchQuery.trim() === '' || 
       prod.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       prod.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
       prod.brand.toLowerCase().includes(searchQuery.toLowerCase());
 
-    return matchesCategory && matchesBrand && matchesPrice && matchesSearch;
+    return matchesCategory && matchesBrand && matchesSearch;
   }).sort((a, b) => {
-    if (sortBy === 'price-low') return a.price - b.price;
-    if (sortBy === 'price-high') return b.price - a.price;
     if (sortBy === 'rating') return b.rating - a.rating;
     return 0; // Default popularity / position
   });
+
+  const openWhatsAppInquiry = (title: string, quantityValue = 1) => {
+    const message = `Hello, I would like to enquire about "${title}". Quantity: ${quantityValue}. Please share the next steps.`;
+    window.open(`https://wa.me/${db.getSupportPhone()}?text=${encodeURIComponent(message)}`, '_blank', 'noreferrer');
+  };
 
   return (
     <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
@@ -211,7 +211,6 @@ export const ProductStore: React.FC<ProductStoreProps> = ({
                 onClick={() => {
                   setSelectedCategory('All');
                   setSelectedBrand('All');
-                  setMaxPrice(500000);
                   setSortBy('popularity');
                   setSearchQuery('');
                   setIsAiSearch(false);
@@ -236,27 +235,6 @@ export const ProductStore: React.FC<ProductStoreProps> = ({
               </select>
             </div>
 
-            {/* Price Filter */}
-            <div className="space-y-3">
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400">Budget Limit</span>
-                <span className="font-bold text-slate-900">₹{maxPrice.toLocaleString('en-IN')}</span>
-              </div>
-              <input
-                type="range"
-                min={4000}
-                max={500000}
-                step={5000}
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(parseInt(e.target.value))}
-                className="w-full accent-primary-500 h-1 bg-slate-100 rounded-lg appearance-none cursor-pointer"
-              />
-              <div className="flex items-center justify-between text-[10px] text-slate-500">
-                <span>₹4K</span>
-                <span>₹5L+</span>
-              </div>
-            </div>
-
             {/* Sort */}
             <div className="space-y-2">
               <label className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block flex items-center space-x-1">
@@ -269,8 +247,6 @@ export const ProductStore: React.FC<ProductStoreProps> = ({
                 className="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs text-slate-800 focus:outline-none focus:border-primary-500"
               >
                 <option value="popularity">Standard Matching</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
                 <option value="rating">Top Rated</option>
               </select>
             </div>
@@ -293,7 +269,7 @@ export const ProductStore: React.FC<ProductStoreProps> = ({
             <div className="space-y-6 text-left">
               {/* AI Engine Status Alert */}
               <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-3 relative overflow-hidden shadow-sm">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-tr from-primary-600/20 to-transparent -z-10 rounded-full blur-xl"></div>
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-tr from-primary-600/20 to-transparent -z-10 rounded-full blur-xl"></div>
                 <div className="flex items-center space-x-2 text-primary-400 font-heading font-semibold text-sm">
                   <Sparkles className="w-4 h-4 text-primary-300" />
                   <span>FastAPI Embedding Vector Match Status</span>
@@ -340,7 +316,7 @@ export const ProductStore: React.FC<ProductStoreProps> = ({
                     </div>
 
                     <div className="p-5 pt-0 flex items-center justify-between border-t border-slate-200 mt-4">
-                      <p className="text-lg font-heading font-bold text-slate-900">₹{res.product.price.toLocaleString('en-IN')}</p>
+                      <span className="text-xs text-slate-500 font-bold">Request on WhatsApp</span>
                       <span className="text-xs text-primary-400 font-bold flex items-center space-x-1 group-hover:translate-x-1 transition-transform">
                         <span>Configure</span>
                         <ChevronRight className="w-4 h-4" />
@@ -352,7 +328,7 @@ export const ProductStore: React.FC<ProductStoreProps> = ({
 
               {aiResults.length === 0 && (
                 <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-400 shadow-sm">
-                  <p>No inventory matched your semantic request. Try widening your pricing query.</p>
+                  <p>No inventory matched your semantic request. Try widening your search query.</p>
                 </div>
               )}
             </div>
@@ -407,14 +383,10 @@ export const ProductStore: React.FC<ProductStoreProps> = ({
                       </div>
                     </div>
 
-                    {/* Bottom Price/CTA */}
+                    {/* Bottom CTA */}
                     <div className="p-5 pt-0 flex items-center justify-between border-t border-slate-200 mt-3">
-                      <p className="text-base sm:text-lg font-heading font-bold text-slate-900">
-                        ₹{prod.price.toLocaleString('en-IN')}
-                      </p>
-                      <button
-                        className="text-xs font-bold text-primary-400 group-hover:text-white transition-colors flex items-center space-x-0.5"
-                      >
+                      <span className="text-xs font-bold text-slate-500">Request on WhatsApp</span>
+                      <button className="text-xs font-bold text-primary-400 group-hover:text-white transition-colors flex items-center space-x-0.5">
                         <span>Details</span>
                         <ChevronRight className="w-4 h-4" />
                       </button>
@@ -474,8 +446,8 @@ export const ProductStore: React.FC<ProductStoreProps> = ({
                 
                 <div className="pt-4 border-t border-slate-200 space-y-4">
                   <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-slate-400 font-semibold">Standard Unit Price:</span>
-                    <span className="text-2xl font-heading font-extrabold text-slate-900">₹{selectedProduct.price.toLocaleString('en-IN')}</span>
+                    <span className="text-xs text-slate-400 font-semibold">WhatsApp quote:</span>
+                    <span className="text-sm font-semibold text-slate-900">Request now</span>
                   </div>
 
                   {selectedProduct.stock > 0 ? (
@@ -500,11 +472,12 @@ export const ProductStore: React.FC<ProductStoreProps> = ({
                       <button
                         onClick={() => {
                           onAddToCart(selectedProduct, quantity);
+                          openWhatsAppInquiry(selectedProduct.title, quantity);
                           setSelectedProduct(null);
                         }}
                         className="flex-1 py-3 bg-gradient-to-tr from-primary-600 to-electric hover:from-primary-500 hover:to-electric-light text-white rounded-xl text-xs font-bold transition-all shadow-lg glow-primary"
                       >
-                        Add to Cart
+                        Send on WhatsApp
                       </button>
                     </div>
                   ) : (
@@ -515,13 +488,13 @@ export const ProductStore: React.FC<ProductStoreProps> = ({
 
                   {/* WhatsApp Quick Chat */}
                   <a
-                    href={`https://wa.me/${db.getSupportPhone()}?text=${encodeURIComponent(`Hello, I am interested in buying the "${selectedProduct.title}" (₹${selectedProduct.price.toLocaleString('en-IN')}). Please advise on stock supply schedule.`)}`}
+                    href={`https://wa.me/${db.getSupportPhone()}?text=${encodeURIComponent(`Hello, I am interested in the "${selectedProduct.title}". Please share availability and next steps.`)}`}
                     target="_blank"
                     rel="noreferrer"
                     className="w-full py-2.5 bg-emerald-600/10 hover:bg-emerald-600/25 border border-emerald-500/30 text-emerald-400 rounded-xl text-xs font-bold flex items-center justify-center space-x-2 transition-all"
                   >
                     <MessageCircle className="w-4 h-4 fill-emerald-500/20" />
-                    <span>Inquire via WhatsApp Business</span>
+                        <span>Inquire via WhatsApp Business</span>
                   </a>
                 </div>
               </div>

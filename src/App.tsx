@@ -10,6 +10,9 @@ import { CustomerPortal } from './components/CustomerPortal';
 import { AdminDashboard } from './components/AdminDashboard';
 import { AdminLogin } from './components/AdminLogin';
 import { CartDrawer } from './components/CartDrawer';
+import { StoriesBar } from './components/StoriesBar';
+import { StoriesViewer } from './components/StoriesViewer';
+import { StoryAdmin } from './components/StoryAdmin';
 import { db } from './db/mockDb';
 import type { Product, User } from './db/mockDb';
 
@@ -25,9 +28,13 @@ function App() {
   const [currentUser, setCurrentUser] = useState<User>(db.getCurrentUser());
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
+  // Stories state
+  const [activeStories, setActiveStories] = useState(db.getActiveStories());
+  const [storyViewerIndex, setStoryViewerIndex] = useState<number | null>(null);
+
   // WhatsApp Context state
   const [whatsAppContext, setWhatsAppContext] = useState<{
-    product?: { title: string; price: number };
+    product?: { title: string };
     service?: { title: string };
   }>({});
 
@@ -38,6 +45,7 @@ function App() {
 
   // Handle adding items to cart
   const handleAddToCart = (product: Product, quantity = 1) => {
+    setWhatsAppContext({ product: { title: product.title } });
     setCart(prev => {
       const existing = prev.find(item => item.product.id === product.id);
       if (existing) {
@@ -99,6 +107,12 @@ function App() {
         onRoleSwitch={handleRoleSwitch}
       />
 
+      {/* Stories Bar */}
+      <StoriesBar
+        onOpenStory={(index) => setStoryViewerIndex(index)}
+        onView={setView}
+      />
+
       {/* Main Pages */}
       <main className="flex-1 flex flex-col">
         {currentView === 'home' && (
@@ -116,7 +130,7 @@ function App() {
             onAddToCart={handleAddToCart}
             selectedProduct={selectedProduct}
             setSelectedProduct={setSelectedProduct}
-            setWhatsAppContext={(product) => setWhatsAppContext({ product })}
+            setWhatsAppContext={(product) => setWhatsAppContext(product ? { product } : {})}
           />
         )}
 
@@ -124,7 +138,7 @@ function App() {
           <ServiceBooking
             currentUser={currentUser}
             setView={setView}
-            setWhatsAppContext={(service) => setWhatsAppContext({ service })}
+            setWhatsAppContext={(service) => setWhatsAppContext(service ? { service } : {})}
           />
         )}
 
@@ -158,6 +172,10 @@ function App() {
             onCancel={() => setView('home')}
           />
         )}
+
+        {currentView === 'stories-admin' && (
+          <StoryAdmin setView={setView} />
+        )}
       </main>
 
       {/* Footer */}
@@ -182,6 +200,24 @@ function App() {
         currentUser={currentUser}
         setView={setView}
       />
+
+      {/* Stories Viewer Overlay */}
+      {storyViewerIndex !== null && activeStories.length > 0 && (
+        <StoriesViewer
+          stories={activeStories}
+          initialIndex={storyViewerIndex}
+          onClose={() => {
+            setStoryViewerIndex(null);
+            // Refresh stories after viewing (view counts updated)
+            setActiveStories(db.getActiveStories());
+          }}
+          onView={(v) => {
+            setStoryViewerIndex(null);
+            setView(v);
+            setActiveStories(db.getActiveStories());
+          }}
+        />
+      )}
     </div>
   );
 }

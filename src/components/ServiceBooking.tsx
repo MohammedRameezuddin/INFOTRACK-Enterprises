@@ -57,6 +57,12 @@ export const ServiceBooking: React.FC<ServiceBookingProps> = ({
     setCreatedRequestId(request.id);
     setIsSubmitted(true);
     setWhatsAppContext(undefined);
+
+    window.open(
+      `https://wa.me/${supportPhone}?text=${encodeURIComponent(`Hello, I submitted a service request for "${selectedService.title}". Request ID: ${request.id}. Preferred date: ${preferredDate}. Contact: ${customerName} (${customerPhone}).`)}`,
+      '_blank',
+      'noreferrer'
+    );
   };
 
   const resetForm = () => {
@@ -121,12 +127,7 @@ export const ServiceBooking: React.FC<ServiceBookingProps> = ({
                     </ul>
                   </div>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                    <div>
-                      <p className="text-[10px] text-slate-500 font-semibold uppercase leading-none">Commercial Rate</p>
-                      <p className="text-xs sm:text-sm font-bold text-slate-900 mt-1">{serv.priceEstimate}</p>
-                    </div>
-                    
+                  <div className="flex items-center justify-end pt-4 border-t border-white/5">
                     <button
                       onClick={() => {
                         setSelectedService(serv);
@@ -134,7 +135,7 @@ export const ServiceBooking: React.FC<ServiceBookingProps> = ({
                       }}
                       className="px-4 py-2.5 bg-primary-600 hover:bg-primary-500 text-white rounded-lg text-xs font-bold transition-colors"
                     >
-                      Book Service
+                      Request on WhatsApp
                     </button>
                   </div>
                 </div>
@@ -273,21 +274,21 @@ export const ServiceBooking: React.FC<ServiceBookingProps> = ({
               />
             </div>
 
-            {/* Price display warning */}
-            <div className="md:col-span-2 bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs text-slate-600 space-y-2">
+            {/* Removed price display warning */}
+            {/* <div className="md:col-span-2 bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs text-slate-600 space-y-2">
               <p className="font-semibold text-slate-900">💰 Estimate Audit Guidelines:</p>
               <ul className="list-disc pl-4 space-y-1 text-slate-400">
                 <li>Local visits inside Telangana (Hyderabad) and Andhra Pradesh (Vijayawada) carry a base transport charge.</li>
                 <li>Commercial contracts (AMC) are custom calculated according to server volume and network complexity.</li>
               </ul>
-            </div>
+            </div> */}
 
             <div className="md:col-span-2 flex flex-col sm:flex-row gap-3 pt-2">
               <button
                 type="submit"
                 className="flex-1 py-3 bg-gradient-to-tr from-primary-600 to-electric hover:from-primary-500 hover:to-electric-light text-white rounded-xl text-xs font-bold transition-all shadow-lg glow-primary"
               >
-                Submit Service Request
+                Send Service Request on WhatsApp
               </button>
               
               <a

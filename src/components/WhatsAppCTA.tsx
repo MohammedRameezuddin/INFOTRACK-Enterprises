@@ -3,7 +3,7 @@ import { MessageSquare, Send, X, ShieldCheck } from 'lucide-react';
 import { db } from '../db/mockDb';
 
 interface WhatsAppCTAProps {
-  activeProduct?: { title: string; price: number };
+  activeProduct?: { title: string };
   activeService?: { title: string };
 }
 
@@ -14,12 +14,12 @@ export const WhatsAppCTA: React.FC<WhatsAppCTAProps> = ({ activeProduct, activeS
   // Default pre-filled message builders
   const getPlaceholder = () => {
     if (activeProduct) {
-      return `Hello, I am interested in buying the "${activeProduct.title}" listed at ₹${activeProduct.price.toLocaleString('en-IN')}. Please provide delivery terms.`;
+      return `Hello, I am interested in the "${activeProduct.title}". Please share availability and next steps.`;
     }
     if (activeService) {
-      return `Hello, I want to book the "${activeService.title}" service for our company office. Please share a commercial quote.`;
+      return `Hello, I want to book the "${activeService.title}" service for our company office. Please share the next steps.`;
     }
-    return `Hello, I would like to inquire about IT hardware supply, AMC service pricing, or network cabling audits for my business.`;
+    return `Hello, I would like to inquire about IT hardware supply, AMC service support, or network cabling audits for my business.`;
   };
 
   const handleSend = () => {
