@@ -34,6 +34,16 @@ export const WhatsAppCTA: React.FC<WhatsAppCTAProps> = ({ activeProduct, activeS
 
   return (
     <div className="fixed bottom-6 left-6 z-40 flex flex-col items-start">
+      {/* "Chat with us" label */}
+      {!isOpen && (
+        <div className="mb-2 animate-bounce">
+          <div className="bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg shadow-lg whitespace-nowrap">
+            Chat with us!
+          </div>
+          <div className="w-2 h-2 bg-emerald-600 rotate-45 mx-auto -mt-1" />
+        </div>
+      )}
+
       {/* Floating Card */}
       {isOpen && (
         <div className="mb-3 w-80 bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden transition-all duration-300">
@@ -98,14 +108,17 @@ export const WhatsAppCTA: React.FC<WhatsAppCTAProps> = ({ activeProduct, activeS
       {/* Floating Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-tr from-emerald-600 to-teal-500 text-white rounded-full flex items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 group glow-electric border border-emerald-400/20"
+        className="relative w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-tr from-emerald-600 to-teal-500 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 group border-2 border-emerald-400/30 animate-pulse hover:animate-none"
         title="Chat with WhatsApp Business"
       >
-        <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 group-hover:rotate-6 transition-transform" />
+        <MessageSquare className="w-6 h-6 sm:w-7 sm:h-7 group-hover:rotate-6 transition-transform" />
+        
+        {/* Always visible green pulse ring */}
+        <span className="absolute inset-0 rounded-full bg-emerald-400/30 animate-ping" />
         
         {/* Unread Alert dot if a item is active */}
         {(activeProduct || activeService) && (
-          <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-red-500 border-2 border-white rounded-full animate-bounce"></span>
+          <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 border-2 border-white rounded-full animate-bounce"></span>
         )}
       </button>
     </div>

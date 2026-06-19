@@ -71,9 +71,23 @@ export const Footer: React.FC = () => {
                   <div>
                     <h3 className="font-heading font-semibold text-slate-900 leading-none">Regional Uptime Coverage</h3>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Serving Nalgonda, Hyderabad, and across Telangana & AP.
+                      Serving Hyderabad, Nalgonda, Suryapet, Warangal, Khammam, Vijayawada, and across Telangana & AP.
                     </p>
                   </div>
+                </div>
+
+                {/* Google Maps Embed */}
+                <div className="rounded-xl overflow-hidden border border-slate-200 mt-2">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15228.73447265625!2d79.26!3d17.05!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc8a0b5e0b4f4e1%3A0x6c1b1b1b1b1b1b1b!2sNalgonda%2C%20Telangana!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                    width="100%"
+                    height="150"
+                    style={{ border: 0 }}
+                    allowFullScreen={false}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Infotrack Enterprises Office Location"
+                  />
                 </div>
               </div>
             </div>
@@ -135,6 +149,15 @@ export const Footer: React.FC = () => {
                   </a>
                 </div>
               </div>
+
+              {/* GST & Business Details */}
+              <div className="mt-4 pt-4 border-t border-slate-200 space-y-1.5">
+                <p className="text-[10px] uppercase font-bold tracking-wider text-slate-400 mb-2">Business Details</p>
+                <p className="text-[10px] text-slate-500">Proprietor: <span className="font-semibold text-slate-700">Mohd Irfan Uddin</span></p>
+                <p className="text-[10px] text-slate-500">GSTIN: <span className="font-semibold text-slate-700">36XXXXXXXXX1Z5</span></p>
+                <p className="text-[10px] text-slate-500">Business Type: <span className="font-semibold text-slate-700">Proprietorship</span></p>
+                <p className="text-[10px] text-slate-400 italic mt-1">* Replace with actual GSTIN when available</p>
+              </div>
             </div>
           </div>
         </div>
@@ -152,9 +175,10 @@ export const Footer: React.FC = () => {
             </p>
           </div>
           <div className="flex flex-wrap gap-3 text-xs font-semibold text-slate-600">
-            <span className="px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200">Privacy Policy</span>
-            <span className="px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200">Terms of Service</span>
-            <span className="px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200">SLA Agreement</span>
+            <a href="https://infotrack-enterprise.vercel.app" onClick={(e) => { e.preventDefault(); }} className="px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 hover:bg-primary-50 hover:text-primary-600 hover:border-primary-200 transition-colors cursor-pointer">Privacy Policy</a>
+            <a href="https://infotrack-enterprise.vercel.app" onClick={(e) => { e.preventDefault(); }} className="px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 hover:bg-primary-50 hover:text-primary-600 hover:border-primary-200 transition-colors cursor-pointer">Terms of Service</a>
+            <a href="https://infotrack-enterprise.vercel.app" onClick={(e) => { e.preventDefault(); }} className="px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 hover:bg-primary-50 hover:text-primary-600 hover:border-primary-200 transition-colors cursor-pointer">SLA Agreement</a>
+            <a href="https://infotrack-enterprise.vercel.app" onClick={(e) => { e.preventDefault(); }} className="px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 hover:bg-primary-50 hover:text-primary-600 hover:border-primary-200 transition-colors cursor-pointer">Refund Policy</a>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowRight, Server, ShieldCheck, Zap, Network, Video, Star, Play, Pause, X, Volume2, VolumeX, Maximize, Minimize, RotateCcw, RotateCw, ChevronDown, ChevronUp, ArrowUp, Phone, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Server, ShieldCheck, Zap, Network, Video, Star, Play, Pause, X, Volume2, VolumeX, Maximize, Minimize, RotateCcw, RotateCw, ChevronDown, ChevronUp, ArrowUp, Phone, CheckCircle2, MapPin, Send, Monitor, Camera, Wifi, HardDrive, MessageCircle } from 'lucide-react';
 import heroPreview from '../assets/hero.png';
 import { db } from '../db/mockDb';
 import type { Product } from '../db/mockDb';
@@ -118,6 +118,114 @@ interface LandingPageProps {
 }
 
 type SolutionTab = 'AMC' | 'Installation' | 'Consultation' | 'Support';
+
+// Quick Contact / Enquiry Form
+const QuickContactForm: React.FC = () => {
+  const [formState, setFormState] = useState({ name: '', email: '', phone: '', service: '', message: '' });
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const { name, phone, service, message } = formState;
+    const whatsappMsg = `Hello, I'm ${name || 'a visitor'}.\nPhone: ${phone || 'N/A'}\nService: ${service || 'General enquiry'}\n\n${message || ''}`;
+    const encodedText = encodeURIComponent(whatsappMsg);
+    window.open(`https://wa.me/${db.getSupportPhone()}?text=${encodedText}`, '_blank');
+    setSubmitted(true);
+    setTimeout(() => {
+      setSubmitted(false);
+      setFormState({ name: '', email: '', phone: '', service: '', message: '' });
+    }, 3000);
+  };
+
+  if (submitted) {
+    return (
+      <div className="text-center py-8 space-y-3">
+        <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto">
+          <CheckCircle2 className="w-8 h-8 text-emerald-600" />
+        </div>
+        <h3 className="font-heading font-bold text-xl text-slate-900">Enquiry Sent!</h3>
+        <p className="text-sm text-slate-500">We'll get back to you within 2 hours via WhatsApp or phone.</p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-[10px] uppercase font-bold tracking-wider text-slate-400 mb-1.5">Your Name *</label>
+          <input
+            type="text"
+            required
+            value={formState.name}
+            onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+            placeholder="Full name"
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:border-primary-500 transition-colors"
+          />
+        </div>
+        <div>
+          <label className="block text-[10px] uppercase font-bold tracking-wider text-slate-400 mb-1.5">Phone Number *</label>
+          <input
+            type="tel"
+            required
+            value={formState.phone}
+            onChange={(e) => setFormState({ ...formState, phone: e.target.value })}
+            placeholder="+91 98765 43210"
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:border-primary-500 transition-colors"
+          />
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-[10px] uppercase font-bold tracking-wider text-slate-400 mb-1.5">Email</label>
+          <input
+            type="email"
+            value={formState.email}
+            onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+            placeholder="you@company.com"
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:border-primary-500 transition-colors"
+          />
+        </div>
+        <div>
+          <label className="block text-[10px] uppercase font-bold tracking-wider text-slate-400 mb-1.5">Service Required *</label>
+          <select
+            required
+            value={formState.service}
+            onChange={(e) => setFormState({ ...formState, service: e.target.value })}
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:border-primary-500 transition-colors"
+          >
+            <option value="">Select a service</option>
+            <option value="AMC Contract">AMC Contract</option>
+            <option value="CCTV Installation">CCTV Installation</option>
+            <option value="Network Setup">Network Setup</option>
+            <option value="Laptop/Desktop Purchase">Laptop/Desktop Purchase</option>
+            <option value="IT Support">IT Support</option>
+            <option value="Website Design">Website Design</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label className="block text-[10px] uppercase font-bold tracking-wider text-slate-400 mb-1.5">Message</label>
+        <textarea
+          value={formState.message}
+          onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+          placeholder="Describe your IT requirements..."
+          rows={3}
+          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:border-primary-500 transition-colors resize-none"
+        />
+      </div>
+      <button
+        type="submit"
+        className="w-full py-3.5 bg-gradient-to-tr from-primary-600 to-electric hover:from-primary-500 hover:to-electric-light text-white rounded-xl text-sm font-bold transition-all shadow-lg flex items-center justify-center space-x-2"
+      >
+        <Send className="w-4 h-4" />
+        <span>Send Enquiry via WhatsApp</span>
+      </button>
+      <p className="text-[10px] text-slate-400 text-center">Your enquiry will be sent via WhatsApp for fastest response.</p>
+    </form>
+  );
+};
 
 export const LandingPage: React.FC<LandingPageProps> = ({ setView, setSelectedProduct }) => {
   const [featuredProducts, setFeaturedProducts] = React.useState<Product[]>(() => db.getProducts().slice(0, 3));
@@ -946,6 +1054,148 @@ export const LandingPage: React.FC<LandingPageProps> = ({ setView, setSelectedPr
               <span>Call Alternate Line</span>
             </a>
           </div>
+        </div>
+      </ScrollReveal>
+
+      {/* Recent Projects / Portfolio Section */}
+      <ScrollReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="text-center space-y-3">
+          <p className="text-[10px] uppercase font-bold tracking-[0.35em] text-primary-500">Our Work</p>
+          <h2 className="text-3xl sm:text-4xl font-heading font-bold">Recent Projects</h2>
+          <p className="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto">
+            Real deployments across Telangana and Andhra Pradesh. From CCTV installations to full office network setups.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            {
+              title: 'CCTV Installation for School',
+              location: 'Nalgonda',
+              description: '32-camera IP surveillance system with NVR, covering classrooms, corridors, and perimeter with remote mobile viewing.',
+              icon: Camera,
+              tags: ['Hikvision', '32 Cameras', 'NVR'],
+              image: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=400&auto=format&fit=crop'
+            },
+            {
+              title: '30 Laptop Deployment',
+              location: 'Hyderabad, T-Hub',
+              description: 'Complete corporate migration with 30+ Dell Latitude laptops, network cabling audit, and workstation provisioning.',
+              icon: Monitor,
+              tags: ['Dell Latitude', '30 Units', 'AMC'],
+              image: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=400&auto=format&fit=crop'
+            },
+            {
+              title: 'Office Network Setup',
+              location: 'Suryapet',
+              description: 'Full structured cabling with Cisco Catalyst switches, Sophos firewall, and Ubiquiti Wi-Fi access points for 50+ users.',
+              icon: Wifi,
+              tags: ['Cisco', 'Sophos', 'Cat6'],
+              image: 'https://images.unsplash.com/photo-1544256718-3bcf237f3974?w=400&auto=format&fit=crop'
+            },
+            {
+              title: 'AMC for Warehouse',
+              location: 'Vijayawada',
+              description: 'Annual maintenance contract covering servers, workstations, network infrastructure, and CCTV with 4-hour SLA response.',
+              icon: HardDrive,
+              tags: ['AMC', 'Server', 'SLA'],
+              image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&auto=format&fit=crop'
+            }
+          ].map((project, idx) => {
+            const Icon = project.icon;
+            return (
+              <div key={idx} className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:border-primary-300 group">
+                <div className="aspect-[4/3] relative overflow-hidden bg-slate-100">
+                  <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent" />
+                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+                    <div className="bg-primary-600 p-2 rounded-lg text-white shadow-md">
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <span className="bg-white/90 backdrop-blur-sm text-slate-700 text-[10px] font-bold px-2 py-1 rounded-full flex items-center space-x-1">
+                      <MapPin className="w-3 h-3" />
+                      <span>{project.location}</span>
+                    </span>
+                  </div>
+                </div>
+                <div className="p-4 space-y-3 text-left">
+                  <h3 className="font-heading font-bold text-sm text-slate-900 group-hover:text-primary-600 transition-colors">{project.title}</h3>
+                  <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-2">{project.description}</p>
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    {project.tags.map((tag) => (
+                      <span key={tag} className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-50 border border-slate-200 text-slate-600">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </ScrollReveal>
+
+      {/* Service Areas Section */}
+      <ScrollReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-gradient-to-br from-primary-600 to-electric rounded-3xl p-6 sm:p-10 lg:p-12 text-white relative overflow-hidden shadow-xl">
+          <div className="absolute top-0 right-0 w-80 h-80 bg-white/5 blur-[80px] rounded-full pointer-events-none" />
+          <div className="relative z-10">
+            <div className="text-center space-y-3 mb-8">
+              <p className="text-[10px] uppercase font-bold tracking-[0.35em] text-white/70">Coverage Area</p>
+              <h2 className="text-3xl sm:text-4xl font-heading font-bold text-white">We Serve Across Telangana & AP</h2>
+              <p className="text-sm text-white/80 max-w-2xl mx-auto">
+                On-site IT support, CCTV installation, network deployment, and AMC services available in these regions.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
+              {[
+                { name: 'Hyderabad', highlight: true },
+                { name: 'Nalgonda', highlight: true },
+                { name: 'Suryapet', highlight: false },
+                { name: 'Warangal', highlight: false },
+                { name: 'Khammam', highlight: false },
+                { name: 'Vijayawada', highlight: false },
+                { name: 'All Telangana & AP', highlight: true }
+              ].map((area) => (
+                <div
+                  key={area.name}
+                  className={`rounded-xl p-3 text-center transition-all duration-300 ${
+                    area.highlight
+                      ? 'bg-white text-primary-700 shadow-lg'
+                      : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
+                  }`}
+                >
+                  <MapPin className={`w-4 h-4 mx-auto mb-1.5 ${area.highlight ? 'text-primary-500' : 'text-white/70'}`} />
+                  <p className={`text-xs font-bold ${area.highlight ? 'text-primary-700' : 'text-white'}`}>{area.name}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 text-center">
+              <p className="text-xs text-white/60 mb-3">Can't find your area? Contact us — we may still be able to help.</p>
+              <a
+                href={`https://wa.me/${db.getSupportPhone()}?text=${encodeURIComponent('Hello, I need IT support services. Is my area covered?')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-2 bg-white text-primary-700 px-6 py-3 rounded-xl font-bold text-sm hover:bg-white/90 transition-all shadow-lg"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Check Availability on WhatsApp</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      {/* Quick Enquiry / Contact Form */}
+      <ScrollReveal className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-xl text-left space-y-6">
+          <div className="text-center space-y-2">
+            <p className="text-[10px] uppercase font-bold tracking-[0.35em] text-primary-500">Get in Touch</p>
+            <h2 className="text-2xl sm:text-3xl font-heading font-bold text-slate-900">Request a Free Quote</h2>
+            <p className="text-sm text-slate-400">Tell us about your IT requirements and we'll get back to you within 2 hours.</p>
+          </div>
+
+          <QuickContactForm />
         </div>
       </ScrollReveal>
 
