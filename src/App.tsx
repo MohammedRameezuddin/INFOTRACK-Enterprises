@@ -174,7 +174,17 @@ function App() {
         )}
 
         {currentView === 'stories-admin' && (
-          <StoryAdmin setView={setView} />
+          currentUser.role === 'admin' ? (
+            <StoryAdmin setView={setView} />
+          ) : (
+            <AdminLogin
+              onLoginSuccess={(user) => {
+                setCurrentUser(user);
+                setView('stories-admin');
+              }}
+              onCancel={() => setView('home')}
+            />
+          )
         )}
       </main>
 

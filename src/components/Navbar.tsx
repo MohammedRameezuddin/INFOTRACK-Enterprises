@@ -91,17 +91,19 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {item.label}
               </button>
             ))}
-            <button
-              onClick={() => setView('stories-admin')}
-              className={`flex items-center space-x-1.5 px-4 py-2 rounded-lg font-bold text-sm transition-all duration-200 ${
-                currentView === 'stories-admin'
-                  ? 'text-slate-900 bg-slate-100 border border-slate-200'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-              }`}
-            >
-              <CircleDot className="w-4 h-4 text-pink-500" />
-              <span>Stories</span>
-            </button>
+            {currentUser.role === 'admin' && (
+              <button
+                onClick={() => setView('stories-admin')}
+                className={`flex items-center space-x-1.5 px-4 py-2 rounded-lg font-bold text-sm transition-all duration-200 ${
+                  currentView === 'stories-admin'
+                    ? 'text-slate-900 bg-slate-100 border border-slate-200'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                }`}
+              >
+                <CircleDot className="w-4 h-4 text-pink-500" />
+                <span>Stories</span>
+              </button>
+            )}
             <button
               onClick={() => setView(currentUser.role === 'admin' ? 'admin' : 'admin-login')}
               className={`flex items-center space-x-1.5 px-4 py-2 rounded-lg font-bold text-sm transition-all duration-200 ${
@@ -197,16 +199,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               {item.label}
             </button>
           ))}
-          <button
-            onClick={() => setView('stories-admin')}
-            className={`px-3 py-1.5 rounded-lg font-bold text-xs whitespace-nowrap transition-all ${
-              currentView === 'stories-admin'
-                ? 'text-slate-900 bg-slate-100'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-            }`}
-          >
-            Stories
-          </button>
+          {currentUser.role === 'admin' && (
+            <button
+              onClick={() => setView('stories-admin')}
+              className={`px-3 py-1.5 rounded-lg font-bold text-xs whitespace-nowrap transition-all ${
+                currentView === 'stories-admin'
+                  ? 'text-slate-900 bg-slate-100'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }`}
+            >
+              Stories
+            </button>
+          )}
           <button
             onClick={() => setView(currentUser.role === 'admin' ? 'admin' : 'admin-login')}
             className={`px-3 py-1.5 rounded-lg font-bold text-xs whitespace-nowrap transition-all ${
