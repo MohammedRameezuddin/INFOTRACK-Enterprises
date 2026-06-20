@@ -563,7 +563,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ setView, setSelectedPr
   };
 
   return (
-    <div className="flex-1 space-y-14 pb-6 overflow-hidden">
+    <div className="space-y-14 pb-6 overflow-hidden">
       {/* Hero Section */}
       <section className="relative overflow-hidden mx-4 sm:mx-6 lg:mx-8 mt-6 rounded-3xl border border-slate-200 bg-white pt-20 pb-16 sm:pt-28 sm:pb-24 shadow-xl">
         {/* Background Video Loop */}
