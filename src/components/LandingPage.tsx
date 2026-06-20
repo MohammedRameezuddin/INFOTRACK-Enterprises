@@ -1156,10 +1156,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ setView, setSelectedPr
               {[
                 { name: 'Hyderabad', highlight: true },
                 { name: 'Nalgonda', highlight: true },
-                { name: 'Suryapet', highlight: false },
-                { name: 'Warangal', highlight: false },
-                { name: 'Khammam', highlight: false },
-                { name: 'Vijayawada', highlight: false },
+                { name: 'Suryapet', highlight: true },
+                { name: 'Warangal', highlight: true },
+                { name: 'Khammam', highlight: true },
+                { name: 'Vijayawada', highlight: true },
                 { name: 'All Telangana & AP', highlight: true }
               ].map((area) => (
                 <div
