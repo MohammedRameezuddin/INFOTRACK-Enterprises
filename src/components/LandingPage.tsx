@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowRight, Server, ShieldCheck, Zap, Network, Video, Star, Play, Pause, X, Volume2, VolumeX, Maximize, Minimize, RotateCcw, RotateCw, ChevronDown, ChevronUp, ArrowUp, Phone, CheckCircle2, MapPin, Send, Monitor, Camera, Wifi, HardDrive, MessageCircle } from 'lucide-react';
+import { ArrowRight, Server, ShieldCheck, Network, Video, Star, Play, Pause, X, Volume2, VolumeX, Maximize, Minimize, RotateCcw, RotateCw, ChevronDown, ChevronUp, ArrowUp, Phone, CheckCircle2, MapPin, Send, Monitor, Camera, Wifi, HardDrive, MessageCircle } from 'lucide-react';
 import heroPreview from '../assets/hero.png';
 import { db } from '../db/mockDb';
 import type { Product } from '../db/mockDb';
@@ -581,10 +581,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ setView, setSelectedPr
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary-500/10 blur-[120px] rounded-full -z-10 pointer-events-none"></div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8 z-10">
-          <div className={`inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-xs text-primary-600 font-semibold tracking-wide animate-pulse transition-all duration-700 transform shadow-sm ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-            <Zap className="w-3.5 h-3.5 text-primary-500" />
-            <span>FastAPI AI & pgvector Embedding Search Integrated</span>
-          </div>
 
           <h1 className={`text-4xl sm:text-6xl lg:text-7xl font-heading font-extrabold tracking-tight text-slate-900 max-w-5xl mx-auto leading-[1.1] transition-all duration-1000 delay-150 transform ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             INFOTRACK Enterprise <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary-400 via-primary-500 to-electric-light">IT Solutions & Hardware</span>
