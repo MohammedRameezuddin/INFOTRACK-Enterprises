@@ -45,7 +45,7 @@ const ScrollReveal: React.FC<{ children: React.ReactNode; className?: string }> 
   );
 };
 
-// 2. Reusable Stats Count-up Animator (Triggers when scrolled into view)
+// 2. Reusable Stats Count-up Animator (Triggers when scrolled into view, with fallback timer)
 const CountUp: React.FC<{ end: number; duration?: number; suffix?: string; prefix?: string; divisor?: number }> = ({ end, duration = 1500, suffix = '', prefix = '', divisor = 1 }) => {
   const [count, setCount] = useState(0);
   const elementRef = useRef<HTMLSpanElement>(null);
@@ -53,7 +53,7 @@ const CountUp: React.FC<{ end: number; duration?: number; suffix?: string; prefi
   useEffect(() => {
     let started = false;
 
-    const startAnimation = () => {
+    const animate = () => {
       if (started) return;
       started = true;
       let startTimestamp: number | null = null;
@@ -72,7 +72,7 @@ const CountUp: React.FC<{ end: number; duration?: number; suffix?: string; prefi
       (entries) => {
         const [entry] = entries;
         if (entry.isIntersecting) {
-          startAnimation();
+          animate();
         }
       },
       { threshold: 0.1 }
@@ -82,8 +82,8 @@ const CountUp: React.FC<{ end: number; duration?: number; suffix?: string; prefi
       observer.observe(elementRef.current);
     }
 
-    // Safety fallback: start animation after 1.5s even if observer doesn't fire
-    const fallbackTimer = setTimeout(startAnimation, 1500);
+    // Fallback: always trigger animation after 1.5s even if observer doesn't fire
+    const fallbackTimer = setTimeout(animate, 1500);
 
     return () => {
       clearTimeout(fallbackTimer);
@@ -774,10 +774,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ setView, setSelectedPr
       <ScrollReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-sm">
           {[
-            { end: 500, prefix: '', suffix: '+', label: 'Enterprise Clients' },
-            { end: 15, prefix: '', suffix: 'Cr+', divisor: 10, label: 'Hardware Deployed' },
-            { end: 998, prefix: '', suffix: '%', divisor: 10, label: 'SLA Support Uptime' },
-            { end: 5, prefix: '', suffix: '★', label: 'Client Satisfaction' }
+            { end: 50, prefix: '', suffix: '+', label: 'Enterprise Clients' },
+            { end: 100, prefix: '', suffix: '+', label: 'Devices Deployed' },
+            { end: 99, prefix: '', suffix: '%', label: 'SLA Support Uptime' },
+            { end: 48, prefix: '', suffix: '★', divisor: 10, label: 'Client Satisfaction' }
           ].map((stat, idx) => (
             <div key={idx} className="text-center space-y-1 sm:space-y-2 border-r border-slate-200 last:border-0">
               <p className="text-2xl sm:text-4xl lg:text-5xl font-heading font-extrabold text-slate-900">
