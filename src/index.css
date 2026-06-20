@@ -164,26 +164,26 @@
   animation: marquee 15s linear infinite;
 }
 
-/* App container */
-#root {
+/* App container — use :first-of-type to avoid targeting duplicate #root injected by extensions */
+#root:first-of-type {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: #ffffff !important;
 }
-html, body, #root, main, #app {
+html, body, #root:first-of-type, main, #app {
   background-color: #ffffff !important;
   color: #0f172a !important;
 }
 
 /* Force-reset any dark background utilities at highest specificity */
 /* Exclude Clerk auth UI elements from background reset */
-*:where(html, body, #root, main, section, div, header, footer):not([class*="cl-"]) {
+*:where(html, body, main, section, div, header, footer):not([class*="cl-"]) {
   background-color: unset !important;
 }
 
 /* Re-apply white to main layout containers */
-body, #root, main, .app-root, .flex, .min-h-screen {
+body, #root:first-of-type, main, .app-root, .flex, .min-h-screen {
   background-color: #ffffff !important;
   color: #0f172a !important;
 }

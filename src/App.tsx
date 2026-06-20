@@ -114,7 +114,7 @@ function App() {
       />
 
       {/* Main Pages */}
-      <main className="flex flex-col">
+      <main className="flex-1 flex flex-col">
         {currentView === 'home' && (
           <LandingPage
             setView={setView}
