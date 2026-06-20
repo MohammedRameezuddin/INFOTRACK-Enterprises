@@ -52,21 +52,27 @@ const CountUp: React.FC<{ end: number; duration?: number; suffix?: string; prefi
 
   useEffect(() => {
     let started = false;
+
+    const startAnimation = () => {
+      if (started) return;
+      started = true;
+      let startTimestamp: number | null = null;
+      const step = (timestamp: number) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        setCount(progress * end);
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        }
+      };
+      window.requestAnimationFrame(step);
+    };
+
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
-        if (entry.isIntersecting && !started) {
-          started = true;
-          let startTimestamp: number | null = null;
-          const step = (timestamp: number) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            setCount(progress * end);
-            if (progress < 1) {
-              window.requestAnimationFrame(step);
-            }
-          };
-          window.requestAnimationFrame(step);
+        if (entry.isIntersecting) {
+          startAnimation();
         }
       },
       { threshold: 0.1 }
@@ -76,7 +82,11 @@ const CountUp: React.FC<{ end: number; duration?: number; suffix?: string; prefi
       observer.observe(elementRef.current);
     }
 
+    // Safety fallback: start animation after 1.5s even if observer doesn't fire
+    const fallbackTimer = setTimeout(startAnimation, 1500);
+
     return () => {
+      clearTimeout(fallbackTimer);
       if (elementRef.current) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         observer.unobserve(elementRef.current);
