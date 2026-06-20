@@ -1118,14 +1118,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ setView, setSelectedPr
                 <div className="aspect-[4/3] relative overflow-hidden bg-slate-100">
                   <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent" />
-                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+                  <div className="absolute bottom-3 left-3">
                     <div className="bg-primary-600 p-2 rounded-lg text-white shadow-md">
                       <Icon className="w-4 h-4" />
                     </div>
-                    <span className="bg-white/90 backdrop-blur-sm text-slate-700 text-[10px] font-bold px-2 py-1 rounded-full flex items-center space-x-1">
-                      <MapPin className="w-3 h-3" />
-                      <span>{project.location}</span>
-                    </span>
                   </div>
                 </div>
                 <div className="p-4 space-y-3 text-left">
