@@ -144,7 +144,6 @@ function App() {
 
         {currentView === 'portal' && (
           <CustomerPortal
-            currentUser={currentUser}
             setView={setView}
           />
         )}

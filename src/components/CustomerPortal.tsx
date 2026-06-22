@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from 'react';
+import { useUser } from '@clerk/clerk-react';
 import { Package, ShieldCheck, MapPin, Calendar, Clock, UserCheck, MessageSquare } from 'lucide-react';
 import { db } from '../db/mockDb';
-import type { Order, ServiceRequest, User } from '../db/mockDb';
+import type { Order, ServiceRequest } from '../db/mockDb';
 
 interface CustomerPortalProps {
-  currentUser: User;
   setView: (view: string) => void;
 }
 
-export const CustomerPortal: React.FC<CustomerPortalProps> = ({ currentUser, setView }) => {
+export const CustomerPortal: React.FC<CustomerPortalProps> = ({ setView }) => {
+  const { user } = useUser();
   const supportPhone = db.getSupportPhone();
   const [activeTab, setActiveTab] = useState<'orders' | 'services'>('orders');
   const [orders, setOrders] = useState<Order[]>([]);
   const [serviceRequests, setServiceRequests] = useState<ServiceRequest[]>([]);
 
   useEffect(() => {
-    // Filter by current user ID
     const allOrders = db.getOrders();
-    setOrders(allOrders.filter(o => o.userId === currentUser.id));
+    // This will be replaced with a real API call that returns orders for the logged in user
+    setOrders(allOrders);
 
     const allRequests = db.getServiceRequests();
-    setServiceRequests(allRequests.filter(r => r.userId === currentUser.id));
-  }, [currentUser]);
+    // This will be replaced with a real API call that returns service requests for the logged in user
+    setServiceRequests(allRequests);
+  }, [user]);
 
   const getStatusColor = (status: Order['orderStatus']) => {
     if (status === 'Delivered') return 'bg-green-500/10 text-green-400 border-green-500/20';
@@ -42,7 +44,7 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ currentUser, set
       {/* Header */}
       <div className="text-left space-y-2">
         <span className="text-[10px] uppercase font-bold tracking-widest text-primary-400">Enterprise Dashboard</span>
-        <h1 className="text-3xl font-heading font-bold text-slate-900">Welcome Back, {currentUser.name}</h1>
+        <h1 className="text-3xl font-heading font-bold text-slate-900">Welcome Back, {user?.fullName || user?.firstName || 'Guest'}</h1>
         <p className="text-slate-400 text-sm">
           Track procurement delivery status, verify payment receipts, or monitor scheduled IT service engineer audits.
         </p>
