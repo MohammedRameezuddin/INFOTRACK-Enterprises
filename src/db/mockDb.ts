@@ -505,9 +505,6 @@ const INITIAL_SERVICE_REQUESTS: ServiceRequest[] = [];
 
 const INITIAL_REVIEWS: Review[] = [];
 
-// Helper: generate a future ISO date
-const hoursFromNow = (h: number) => new Date(Date.now() + h * 3600000).toISOString();
-
 const INITIAL_STORIES: Story[] = [];
 
 export class MockDb {
