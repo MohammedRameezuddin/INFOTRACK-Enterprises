@@ -24,6 +24,14 @@ export const AdminDashboard: React.FC = () => {
     db.setDirectorName(settingDirectorName);
     alert('Settings successfully updated on the platform!');
   };
+
+  const handleResetData = () => {
+    if (confirm('Are you sure you want to reset all data? This will clear all orders, reviews, and stories. This action cannot be undone.')) {
+      db.resetDatabase();
+      loadDb();
+      alert('All platform data has been reset.');
+    }
+  };
   
   // DB States
   const [products, setProducts] = useState<Product[]>([]);
@@ -73,14 +81,19 @@ export const AdminDashboard: React.FC = () => {
 
   // Chart Data preparation
   // Group orders by month/date for sales chart
-  const salesChartData = [
-    { name: 'May 10', Sales: 62400 },
-    { name: 'May 12', Sales: 124800 },
-    { name: 'May 15', Sales: 78000 },
-    { name: 'May 18', Sales: 145000 },
-    { name: 'May 20', Sales: 261000 },
-    { name: 'May 24', Sales: 495000 },
-  ];
+  const salesChartData = orders
+    .filter(o => o.paymentStatus === 'Paid')
+    .reduce((acc, order) => {
+      const date = new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const existing = acc.find(item => item.name === date);
+      if (existing) {
+        existing.Sales += order.totalPrice;
+      } else {
+        acc.push({ name: date, Sales: order.totalPrice });
+      }
+      return acc;
+    }, [] as { name: string; Sales: number }[])
+    .sort((a, b) => new Date(a.name).getTime() - new Date(b.name).getTime());
 
   // Group products by category for stock chart
   const categoriesData = ['Laptops', 'Servers', 'CCTV & Security', 'Networking'].map(cat => ({
@@ -300,29 +313,6 @@ export const AdminDashboard: React.FC = () => {
                   <Bar dataKey="Value" name="Asset Value (Lakhs)" fill="#3b82f6" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
-            </div>
-          </div>
-
-          {/* Regional SEO / Traffic highlights */}
-          <div className="lg:col-span-2 bg-slate-50 border border-slate-200 rounded-2xl p-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-slate-600">
-            <div>
-              <h4 className="font-semibold text-slate-900 mb-2">Regional Traffic Analysis (Telangana vs AP)</h4>
-              <ul className="space-y-2 leading-relaxed">
-                <li className="flex justify-between border-b border-white/5 pb-1">
-                  <span>Telangana (Hyderabad Hub)</span>
-                  <span className="font-bold text-slate-900">65% Traffic (320 Active Queries)</span>
-                </li>
-                <li className="flex justify-between border-b border-white/5 pb-1">
-                  <span>Andhra Pradesh (Vijayawada Hub)</span>
-                  <span className="font-bold text-slate-900">35% Traffic (180 Active Queries)</span>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-slate-900 mb-2">FastAPI AI Vector Usage logs</h4>
-              <p className="leading-relaxed">
-                Our pgvector similarity engine registered <strong className="text-slate-900">1,240 semantic embeddings requests</strong> this week. The chatbot recommendation conversion rate is at <strong className="text-green-400 font-bold">14.2%</strong>.
-              </p>
             </div>
           </div>
 
@@ -692,12 +682,21 @@ export const AdminDashboard: React.FC = () => {
               </span>
             </div>
 
-            <button
-              type="submit"
-              className="py-3 px-6 bg-gradient-to-tr from-primary-600 to-electric hover:from-primary-500 hover:to-electric-light text-white rounded-xl font-bold transition-all shadow-lg text-xs uppercase tracking-wider glow-primary"
-            >
-              Save Platform Configuration
-            </button>
+            <div className="flex items-center space-x-4">
+              <button
+                type="submit"
+                className="py-3 px-6 bg-gradient-to-tr from-primary-600 to-electric hover:from-primary-500 hover:to-electric-light text-white rounded-xl font-bold transition-all shadow-lg text-xs uppercase tracking-wider glow-primary"
+              >
+                Save Platform Configuration
+              </button>
+              <button
+                type="button"
+                onClick={handleResetData}
+                className="py-3 px-6 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold transition-all shadow-lg text-xs uppercase tracking-wider"
+              >
+                Reset Platform Data
+              </button>
+            </div>
           </form>
         </div>
       )}

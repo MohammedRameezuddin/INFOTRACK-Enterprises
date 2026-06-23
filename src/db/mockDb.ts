@@ -164,7 +164,7 @@ const INITIAL_PRODUCTS: Product[] = [
       Storage: '512GB Gen4 SSD',
       Display: '14" WUXGA Anti-Glare IPS',
       OS: 'Windows 11 Pro',
-      Battery: '51Whr Long Life Battery',
+      Battery: '51Whr with Rapid Charge',
       Weight: '1.36 kg',
       Security: 'HP Sure Start, TPM 2.0, Privacy Screen Option'
     },
@@ -503,126 +503,12 @@ const INITIAL_ORDERS: Order[] = [];
 
 const INITIAL_SERVICE_REQUESTS: ServiceRequest[] = [];
 
-const INITIAL_REVIEWS: Review[] = [
-  {
-    id: 'rev-1',
-    productId: 'prod-1',
-    userName: 'Rajesh K., Tech Director',
-    rating: 5,
-    comment: 'Super lightweight and secure. Excellent for our executive team who travels between Hyderabad and Bangalore frequently. vPro remote management is a big plus.',
-    createdAt: '2026-04-12T10:00:00Z'
-  },
-  {
-    id: 'rev-2',
-    productId: 'prod-1',
-    userName: 'Swathi Reddy, SysAdmin',
-    rating: 4,
-    comment: 'Excellent performance and lightweight body. Only minor feedback is the display brightness in direct sunlight could be slightly higher, but anti-glare is great.',
-    createdAt: '2026-05-02T14:30:00Z'
-  },
-  {
-    id: 'rev-3',
-    productId: 'prod-4',
-    userName: 'Karthik N., Cloud Architect',
-    rating: 5,
-    comment: 'Absolute beast of a server. Configured RAID 10 and virtualized with VMware ESXi. Easily handles our analytics databases. Onsite support was fast to answer query.',
-    createdAt: '2026-03-20T08:15:00Z'
-  },
-  {
-    id: 'rev-4',
-    productId: 'prod-6',
-    userName: 'Srinivas G., Operations Head',
-    rating: 5,
-    comment: 'The AccuSense vehicle classification works flawlessly. Cut down on false alarms by 90% compared to our previous hardware. Highly recommend.',
-    createdAt: '2026-05-18T16:00:00Z'
-  }
-];
+const INITIAL_REVIEWS: Review[] = [];
 
 // Helper: generate a future ISO date
 const hoursFromNow = (h: number) => new Date(Date.now() + h * 3600000).toISOString();
 
-const INITIAL_STORIES: Story[] = [
-  {
-    id: 'story-1',
-    title: 'Summer Sale is Live!',
-    description: 'Up to 30% off on Dell Latitude laptops. Limited period offer – grab now!',
-    mediaUrl: 'https://images.unsplash.com/photo-1607053300615-3c92e2e1d1b4?w=1080&auto=format&fit=crop',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1607053300615-3c92e2e1d1b4?w=150&auto=format&fit=crop',
-    mediaType: 'image',
-    status: 'published',
-    createdBy: 'user-admin',
-    createdAt: hoursFromNow(-6),
-    expiresAt: hoursFromNow(18),
-    ctaText: 'Shop Now',
-    ctaUrl: '/store',
-    viewCount: 342,
-    category: 'offer'
-  },
-  {
-    id: 'story-2',
-    title: 'New Arrival: ThinkPad X1 Carbon',
-    description: 'The legendary business laptop is now in stock. Premium keyboard, carbon fibre build.',
-    mediaUrl: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=1080&auto=format&fit=crop',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=150&auto=format&fit=crop',
-    mediaType: 'image',
-    status: 'published',
-    createdBy: 'user-admin',
-    createdAt: hoursFromNow(-3),
-    expiresAt: hoursFromNow(21),
-    ctaText: 'View Product',
-    ctaUrl: '/store',
-    viewCount: 187,
-    category: 'product'
-  },
-  {
-    id: 'story-3',
-    title: 'Free CCTV Site Survey',
-    description: 'Book a free on-site surveillance survey this week. No obligation, expert consultation included.',
-    mediaUrl: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=1080&auto=format&fit=crop',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=150&auto=format&fit=crop',
-    mediaType: 'image',
-    status: 'published',
-    createdBy: 'user-admin',
-    createdAt: hoursFromNow(-12),
-    expiresAt: hoursFromNow(12),
-    ctaText: 'Book Survey',
-    ctaUrl: '/services',
-    viewCount: 521,
-    category: 'promotion'
-  },
-  {
-    id: 'story-4',
-    title: 'Server Infrastructure Upgrade',
-    description: 'Dell PowerEdge R760 now available. Dual Xeon, 128GB ECC RAM. Built for enterprise AI workloads.',
-    mediaUrl: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1080&auto=format&fit=crop',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=150&auto=format&fit=crop',
-    mediaType: 'image',
-    status: 'published',
-    createdBy: 'user-admin',
-    createdAt: hoursFromNow(-2),
-    expiresAt: null, // permanent
-    ctaText: 'Learn More',
-    ctaUrl: '/store',
-    viewCount: 95,
-    category: 'announcement'
-  },
-  {
-    id: 'story-5',
-    title: 'Network Security Webinar',
-    description: 'Join our free webinar on Sophos XGS firewall best practices. This Thursday, 4 PM IST.',
-    mediaUrl: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1080&auto=format&fit=crop',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=150&auto=format&fit=crop',
-    mediaType: 'image',
-    status: 'published',
-    createdBy: 'user-admin',
-    createdAt: hoursFromNow(-1),
-    expiresAt: hoursFromNow(48),
-    ctaText: 'Register Now',
-    ctaUrl: '/services',
-    viewCount: 64,
-    category: 'news'
-  }
-];
+const INITIAL_STORIES: Story[] = [];
 
 export class MockDb {
   private getStorageItem<T>(key: string, initial: T): T {
@@ -657,6 +543,14 @@ export class MockDb {
 
   logout(): void {
     localStorage.removeItem('infotrack_current_user');
+  }
+
+  resetDatabase(): void {
+    // Note: This is a destructive operation.
+    // It clears all infotrack-related data from localStorage.
+    Object.keys(localStorage)
+      .filter(key => key.startsWith('infotrack_'))
+      .forEach(key => localStorage.removeItem(key));
   }
 
   authenticateAdmin(email: string, password: string): User | null {
@@ -727,7 +621,7 @@ export class MockDb {
 
   // Orders
   getOrders(): Order[] {
-    return this.getStorageItem<Order[]>('orders', INITIAL_ORDERS);
+    return INITIAL_ORDERS;
   }
 
   createOrder(order: Omit<Order, 'id' | 'createdAt'>): Order {
